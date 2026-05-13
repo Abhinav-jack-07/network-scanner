@@ -51,6 +51,12 @@ def _normalize(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip().lower()
 
 
+def _contains_keyword(normalized_text: str, keywords: set[str]) -> bool:
+    return any(
+        re.search(rf"\b{re.escape(keyword)}\b", normalized_text) for keyword in keywords
+    )
+
+
 def _verify_signature(signature_header: Optional[str], body: bytes) -> bool:
     if not signature_header:
         return False
@@ -208,13 +214,13 @@ async def handle_webhook(request: Request) -> JSONResponse:
             "Incoming message from %s: %s", user_id, _redact_for_logs(user_text)
         )
 
-        if normalized in OPT_OUT_KEYWORDS:
+        if _contains_keyword(normalized, OPT_OUT_KEYWORDS):
             user_state.opted_out = True
             user_state.human_handoff = False
             await _send_text_message(user_id, "You are opted out. Reply START to resume.")
             continue
 
-        if normalized in OPT_IN_KEYWORDS:
+        if _contains_keyword(normalized, OPT_IN_KEYWORDS):
             user_state.opted_out = False
             user_state.human_handoff = False
             await _send_text_message(user_id, "Thanks! You are opted back in.")
@@ -226,14 +232,14 @@ async def handle_webhook(request: Request) -> JSONResponse:
             )
             continue
 
-        if normalized in HELP_KEYWORDS:
+        if _contains_keyword(normalized, HELP_KEYWORDS):
             await _send_text_message(
                 user_id,
                 "Reply with your question, send HUMAN for a person, or STOP to opt out.",
             )
             continue
 
-        if normalized in HUMAN_KEYWORDS:
+        if _contains_keyword(normalized, HUMAN_KEYWORDS):
             user_state.human_handoff = True
             await _send_text_message(
                 user_id,
@@ -263,7 +269,8 @@ async def handle_webhook(request: Request) -> JSONResponse:
 
         ai_response = await _generate_ai_response(user_id, user_text)
         state_store.add_history(user_state, "user", user_text)
-        state_store.add_history(user_state, "assistant", ai_response)
+        if ai_response != FALLBACK_MESSAGE:
+            state_store.add_history(user_state, "assistant", ai_response)
         await _send_text_message(user_id, ai_response)
 
     return JSONResponse({"status": "ok"})

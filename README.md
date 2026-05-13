@@ -4,7 +4,7 @@ A simple Python-based ARP network scanner using Scapy. It scans a local subnet a
 
 ## 📦 Requirements
 - Python 3
-- scapy (`pip install scapy`)
+- scapy (`pip install -r requirements-scanner.txt`)
 - Run as root/administrator
 
 ## 💻 Usage
@@ -38,9 +38,9 @@ A minimal FastAPI-based WhatsApp webhook + AI responder lives in `whatsapp_bot/`
    - Optional: set `WHATSAPP_API_VERSION` if you need a newer Graph API version.
 4. Install dependencies:
    ```bash
-   pip install -r requirements.txt
+   pip install -r requirements-bot.txt
    ```
-   - Note: `requirements.txt` includes dependencies for both the scanner and the WhatsApp bot.
+   - `requirements-scanner.txt` is still used for the original network scanner.
 5. Run the server:
    ```bash
    uvicorn whatsapp_bot.app:app --host 0.0.0.0 --port 8000
