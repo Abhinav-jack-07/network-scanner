@@ -1,0 +1,28 @@
+[
+  {
+    "questions": [
+      "hours",
+      "opening hours",
+      "support hours",
+      "when are you open"
+    ],
+    "answer": "Our support hours are 9am–5pm local time on weekdays. Reply HUMAN if you need a callback outside these hours."
+  },
+  {
+    "questions": [
+      "pricing",
+      "cost",
+      "plans",
+      "subscription"
+    ],
+    "answer": "We offer flexible plans based on usage. Share a bit about your needs and we will connect you with a human specialist."
+  },
+  {
+    "questions": [
+      "data privacy",
+      "privacy",
+      "data retention"
+    ],
+    "answer": "We keep only the minimum data required to support your request. Reply HUMAN to ask for a detailed privacy explanation."
+  }
+]
