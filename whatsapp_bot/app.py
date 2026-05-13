@@ -106,8 +106,9 @@ def _extract_messages(payload: Dict[str, Any]) -> List[Dict[str, str]]:
 def _redact_for_logs(text: str) -> str:
     if not text:
         return ""
-    redacted = text[:40]
-    if len(text) > 40:
+    limit = settings.log_redaction_chars
+    redacted = text[:limit]
+    if len(text) > limit:
         redacted += "…"
     return redacted
 
@@ -124,7 +125,9 @@ async def _send_text_message(to_number: str, text: str) -> None:
         "text": {"preview_url": False, "body": text},
     }
     headers = {"Authorization": f"Bearer {settings.whatsapp_access_token}"}
-    async with httpx.AsyncClient(timeout=10) as client:
+    async with httpx.AsyncClient(
+        timeout=settings.whatsapp_request_timeout_seconds
+    ) as client:
         response = await client.post(url, headers=headers, json=payload)
         if response.status_code >= 400:
             logger.error(
@@ -149,7 +152,9 @@ async def _generate_ai_response(user_id: str, user_text: str) -> str:
         "temperature": 0.2,
     }
     headers = {"Authorization": f"Bearer {settings.openai_api_key}"}
-    async with httpx.AsyncClient(timeout=15) as client:
+    async with httpx.AsyncClient(
+        timeout=settings.openai_request_timeout_seconds
+    ) as client:
         response = await client.post(
             f"{settings.openai_base_url}/chat/completions",
             headers=headers,

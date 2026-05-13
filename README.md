@@ -40,6 +40,7 @@ A minimal FastAPI-based WhatsApp webhook + AI responder lives in `whatsapp_bot/`
    ```bash
    pip install -r requirements.txt
    ```
+   - Note: `requirements.txt` includes dependencies for both the scanner and the WhatsApp bot.
 5. Run the server:
    ```bash
    uvicorn whatsapp_bot.app:app --host 0.0.0.0 --port 8000

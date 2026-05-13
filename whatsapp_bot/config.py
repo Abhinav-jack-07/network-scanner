@@ -30,6 +30,9 @@ class Settings:
     rate_limit_max: int
     rate_limit_window_seconds: int
     faq_path: str
+    whatsapp_request_timeout_seconds: int
+    openai_request_timeout_seconds: int
+    log_redaction_chars: int
 
 
 def get_settings() -> Settings:
@@ -48,4 +51,11 @@ def get_settings() -> Settings:
         rate_limit_max=int(os.getenv("RATE_LIMIT_MAX", "5")),
         rate_limit_window_seconds=int(os.getenv("RATE_LIMIT_WINDOW_SECONDS", "60")),
         faq_path=os.getenv("FAQ_PATH", os.path.join(base_dir, "faq.json")),
+        whatsapp_request_timeout_seconds=int(
+            os.getenv("WHATSAPP_REQUEST_TIMEOUT_SECONDS", "10")
+        ),
+        openai_request_timeout_seconds=int(
+            os.getenv("OPENAI_REQUEST_TIMEOUT_SECONDS", "15")
+        ),
+        log_redaction_chars=int(os.getenv("LOG_REDACTION_CHARS", "40")),
     )
