@@ -35,6 +35,7 @@ A minimal FastAPI-based WhatsApp webhook + AI responder lives in `whatsapp_bot/`
    cp whatsapp_bot/.env.example whatsapp_bot/.env
    ```
 3. Fill in the required credentials in `whatsapp_bot/.env`.
+   - Optional: set `WHATSAPP_API_VERSION` if you need a newer Graph API version.
 4. Install dependencies:
    ```bash
    pip install -r requirements.txt

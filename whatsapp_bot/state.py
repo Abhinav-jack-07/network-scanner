@@ -39,7 +39,7 @@ class StateStore:
     def is_rate_limited(self, user_state: UserState) -> bool:
         now = time.time()
         self._trim_timestamps(user_state, now)
-        return len(user_state.message_timestamps) > self._rate_limit_max
+        return len(user_state.message_timestamps) >= self._rate_limit_max
 
     def _trim_timestamps(self, user_state: UserState, now: float) -> None:
         cutoff = now - self._rate_limit_window_seconds

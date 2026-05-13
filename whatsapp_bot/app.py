@@ -113,7 +113,10 @@ def _redact_for_logs(text: str) -> str:
 
 
 async def _send_text_message(to_number: str, text: str) -> None:
-    url = f"https://graph.facebook.com/v19.0/{settings.whatsapp_phone_number_id}/messages"
+    url = (
+        "https://graph.facebook.com/"
+        f"{settings.whatsapp_api_version}/{settings.whatsapp_phone_number_id}/messages"
+    )
     payload = {
         "messaging_product": "whatsapp",
         "to": to_number,
@@ -228,13 +231,15 @@ async def handle_webhook(request: Request) -> JSONResponse:
         if normalized in HUMAN_KEYWORDS:
             user_state.human_handoff = True
             await _send_text_message(
-                user_id, "Got it. A human agent will follow up shortly."
+                user_id,
+                "Got it. A human agent will follow up shortly. Reply START to return to the AI assistant.",
             )
             continue
 
         if user_state.human_handoff:
             await _send_text_message(
-                user_id, "A human agent will follow up shortly. Reply START to resume."
+                user_id,
+                "A human agent will follow up shortly. Reply START to return to the AI assistant.",
             )
             continue
 

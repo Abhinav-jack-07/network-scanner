@@ -22,6 +22,7 @@ class Settings:
     whatsapp_access_token: str
     whatsapp_phone_number_id: str
     whatsapp_app_secret: str
+    whatsapp_api_version: str
     openai_api_key: str
     openai_base_url: str
     openai_model: str
@@ -39,6 +40,7 @@ def get_settings() -> Settings:
         whatsapp_access_token=_required_env("WHATSAPP_ACCESS_TOKEN"),
         whatsapp_phone_number_id=_required_env("WHATSAPP_PHONE_NUMBER_ID"),
         whatsapp_app_secret=_required_env("WHATSAPP_APP_SECRET"),
+        whatsapp_api_version=os.getenv("WHATSAPP_API_VERSION", "v19.0"),
         openai_api_key=_required_env("OPENAI_API_KEY"),
         openai_base_url=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1"),
         openai_model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
