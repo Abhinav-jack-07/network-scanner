@@ -51,10 +51,8 @@ def _normalize(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip().lower()
 
 
-def _contains_keyword(normalized_text: str, keywords: set[str]) -> bool:
-    return any(
-        re.search(rf"\b{re.escape(keyword)}\b", normalized_text) for keyword in keywords
-    )
+def _contains_keyword(text: str, keywords: set[str]) -> bool:
+    return any(re.search(rf"\b{re.escape(keyword)}\b", text) for keyword in keywords)
 
 
 def _verify_signature(signature_header: Optional[str], body: bytes) -> bool:
